@@ -1,6 +1,10 @@
 package uo.sdm.mapintegrationapp.business;
 
+import android.location.Location;
+
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  *
@@ -11,8 +15,17 @@ import com.google.android.gms.maps.*;
 public class MapManager {
 
     private GoogleMap googleMap;
-
-    public MapManager (final GoogleMap initialMap) {
+    private LocationClient locationClient;
+    public MapManager (final GoogleMap initialMap, final LocationClient locationClient) {
         this.googleMap = initialMap;
+        this.locationClient = locationClient;
+        locationClient.connect();
+    }
+
+
+    public void moveToGps(){
+        Location location = locationClient.getLastLocation();
+        if(location != null)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),14));
     }
 }
