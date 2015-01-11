@@ -1,6 +1,10 @@
 package uo.sdm.mapintegrationapp.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,20 +23,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import uo.sdm.mapintegrationapp.R;
 import uo.sdm.mapintegrationapp.business.MapManager;
 
-public class MapActivity extends ActionBarActivity implements
-        LocationListener,
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener{
+public class MapActivity extends ActionBarActivity{
 
     private GoogleMap googleMap;
     private MapManager mapManager;
-
+    private LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         createMapManager();
-        mapManager.moveToGps();
     }
 
 
@@ -69,7 +69,8 @@ public class MapActivity extends ActionBarActivity implements
                 if (googleMap == null) {
                     Toast.makeText(getApplicationContext(), "Error en la creación del mapa", Toast.LENGTH_SHORT).show();
                 }
-                mapManager = new MapManager(googleMap, new LocationClient(this,this,this));
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                mapManager = new MapManager(googleMap,locationManager );
             }
         }catch (NullPointerException exception) {
             Log.e( R.string.app_name + " createMapView", exception.toString());
@@ -87,25 +88,5 @@ public class MapActivity extends ActionBarActivity implements
                                 .draggable(true)
             );
         }
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-
-    }
-
-    @Override
-    public void onDisconnected() {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 }
