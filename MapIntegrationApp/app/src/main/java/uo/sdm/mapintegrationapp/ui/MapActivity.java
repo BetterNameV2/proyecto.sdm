@@ -1,5 +1,7 @@
 package uo.sdm.mapintegrationapp.ui;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,17 +14,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import uo.sdm.mapintegrationapp.R;
+import uo.sdm.mapintegrationapp.business.MapManager;
 
 public class MapActivity extends ActionBarActivity {
 
     GoogleMap googleMap;
+    MapManager mapManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        createMapView();
-        addMarker();
+        createMapManager();
+        mapManager.moveToGps();
     }
 
 
@@ -47,11 +51,7 @@ public class MapActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Inicializa el mapview
-     */
-    private void createMapView() {
+    private void createMapManager() {
         try {
             if (googleMap == null) {
                 googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();
@@ -59,22 +59,10 @@ public class MapActivity extends ActionBarActivity {
                 if (googleMap == null) {
                     Toast.makeText(getApplicationContext(), "Error en la creación del mapa", Toast.LENGTH_SHORT).show();
                 }
+                mapManager = new MapManager(googleMap,(LocationManager)this.getBaseContext().getSystemService(Context.LOCATION_SERVICE));
             }
         }catch (NullPointerException exception) {
             Log.e( R.string.app_name + " createMapView", exception.toString());
-        }
-    }
-
-    /**
-     * Añade el marcador
-     */
-    private void addMarker(){
-        if (googleMap != null) {
-            googleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(0,0))
-                                .title("Marcador")
-                                .draggable(true)
-            );
         }
     }
 }
