@@ -15,6 +15,14 @@ public class CircularZone {
         _longitude = longitude;
     }
 
+    public CircularZone(long id, double latitude, double longitude, double radius, double influenceRadius) {
+        _id = id;
+        _latitude = latitude;
+        _longitude = longitude;
+        _radius = radius;
+        _influenceRadius = influenceRadius;
+    }
+
     public long getId() {
         return _id;
     }
