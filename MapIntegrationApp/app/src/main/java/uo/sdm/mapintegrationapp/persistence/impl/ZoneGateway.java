@@ -1,4 +1,4 @@
-package uo.sdm.mapintegrationapp.persistence;
+package uo.sdm.mapintegrationapp.persistence.impl;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,22 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import uo.sdm.mapintegrationapp.business.Zone;
+import uo.sdm.mapintegrationapp.persistence.ZoneDB;
 
 public class ZoneGateway {
 
     private SQLiteDatabase database;
-    private final ZoneDatabaseHandler dbHelper;
+    private final ZoneDB dbHelper;
 
     private final String[] columns = {
-            ZoneDatabaseHandler.COLUMN_ID,
-            ZoneDatabaseHandler.COLUMN_LATITUDE,
-            ZoneDatabaseHandler.COLUMN_LONGITUDE,
-            ZoneDatabaseHandler.COLUMN_RADIUS,
-            ZoneDatabaseHandler.COLUMN_INFLUENCERADIUS
+            ZoneDB.TABLE_ZONES.COLUMN_ID,
+            ZoneDB.TABLE_ZONES.COLUMN_LATITUDE,
+            ZoneDB.TABLE_ZONES.COLUMN_LONGITUDE,
+            ZoneDB.TABLE_ZONES.COLUMN_RADIUS,
+            ZoneDB.TABLE_ZONES.COLUMN_INFLUENCE_RADIUS
     };
 
     public ZoneGateway (final Context context){
-        dbHelper = new ZoneDatabaseHandler(context);
+        dbHelper = new ZoneDB(context);
     }
 
     public void open(){
@@ -36,12 +37,12 @@ public class ZoneGateway {
     public long createZone(final double longitude, final double latitude, final double radius, final double influenceRadius){
         final ContentValues values = new ContentValues();
 
-        values.put(ZoneDatabaseHandler.COLUMN_LATITUDE, latitude);
-        values.put(ZoneDatabaseHandler.COLUMN_LONGITUDE, longitude);
-        values.put(ZoneDatabaseHandler.COLUMN_RADIUS, radius);
-        values.put(ZoneDatabaseHandler.COLUMN_INFLUENCERADIUS, influenceRadius);
+        values.put(ZoneDB.TABLE_ZONES.COLUMN_LATITUDE, latitude);
+        values.put(ZoneDB.TABLE_ZONES.COLUMN_LONGITUDE, longitude);
+        values.put(ZoneDB.TABLE_ZONES.COLUMN_RADIUS, radius);
+        values.put(ZoneDB.TABLE_ZONES.COLUMN_INFLUENCE_RADIUS, influenceRadius);
 
-        return database.insert(ZoneDatabaseHandler.TABLE_ZONES, null, values);
+        return database.insert(ZoneDB.TABLE_ZONES.NAME, null, values);
     }
 
     public Zone getZone(final long id){
@@ -51,9 +52,9 @@ public class ZoneGateway {
         };
 
         Cursor cursor = database.query(
-                ZoneDatabaseHandler.TABLE_ZONES,
+                ZoneDB.TABLE_ZONES.NAME,
                 columns,
-                ZoneDatabaseHandler.COLUMN_ID + " = ?",
+                ZoneDB.TABLE_ZONES.COLUMN_ID + " = ?",
                 queryArgs,
                 null, null, null);
 
