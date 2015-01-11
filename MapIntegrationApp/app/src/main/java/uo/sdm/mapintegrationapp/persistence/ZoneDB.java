@@ -50,7 +50,6 @@ public class ZoneDB extends SQLiteOpenHelper{
 
     public static final String[] DEPRECATED_TABLES_DROPS = {};
 
-
     public ZoneDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
