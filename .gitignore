@@ -24,3 +24,5 @@ proguard/
 
 # Log Files
 *.log
+MapIntegrationApp/.idea/gradle.xml
+MapIntegrationApp/.idea/misc.xml

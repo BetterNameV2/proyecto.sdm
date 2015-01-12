@@ -25,9 +25,11 @@ import uo.sdm.mapintegrationapp.business.MapManager;
 
 public class MapActivity extends ActionBarActivity{
 
+    private LocationClient locationClient = new LocationClient(null, null, null);
     private GoogleMap googleMap;
     private MapManager mapManager;
     private LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +71,9 @@ public class MapActivity extends ActionBarActivity{
                 if (googleMap == null) {
                     Toast.makeText(getApplicationContext(), "Error en la creación del mapa", Toast.LENGTH_SHORT).show();
                 }
+
                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                mapManager = new MapManager(googleMap,locationManager );
+                mapManager = new MapManager(googleMap, locationManager);
             }
         }catch (NullPointerException exception) {
             Log.e( R.string.app_name + " createMapView", exception.toString());
